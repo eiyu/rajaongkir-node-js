@@ -39,7 +39,6 @@ module.exports = {
 
 
 	getRestUrl: function(params) {
-		console.log("module",params)
 		return new Promise((resolve, rej) => {
 			unirest.get('http://'+setting.account()+'.rajaongkir.com/api/'+setting.getPath(params))
 			.headers(setting.getKey())
@@ -57,13 +56,55 @@ module.exports = {
 		return new Promise((resolve, rej) => {
 			unirest.post('http://'+setting.account()+'.rajaongkir.com/api/cost')
 			.headers(setting.getHeaders())
-			.send(setting.getInfo(params))
+			.send(setting.getCostInfo(params))
+			.end(function (response) {
+				var body = response.body
+				resolve(body)
+			});
+		})
+	},
+
+	/**
+	* @ params object {waybill, courier}
+	*/
+	getWaybill : function(params) {
+		return new Promise((resolve, rej) => {
+			unirest.post('http://'+setting.account()+'.rajaongkir.com/api/waybill')
+			.headers(setting.getHeaders())
+			.send(params)
+			.end(function (response) {
+				var body = response.body
+				resolve(body)
+			});
+		})
+	},
+
+	getCountry : function(countryId) {
+		return new Promise((resolve, rej) => {
+			unirest.get('http://'+setting.account()+
+			'.rajaongkir.com/api/v2/internationalDestination?id='+countryId)
+			.headers(setting.getKey())
+			.end(function (response) {
+				var body = response.body
+				resolve(body)
+			});
+		})
+	},
+	/**
+	* @ params object {origin, destination, weight, courier}
+	*/
+	getInternationalCost : function(params) {
+		return new Promise((resolve, rej) => {
+			unirest.post('http://'+setting.account()+'.rajaongkir.com/api/v2/internationalCost')
+			.headers(setting.getHeaders())
+			.send(params)
 			.end(function (response) {
 				var body = response.body
 				resolve(body)
 			});
 		})
 	}
+
 
 }
 

@@ -12,7 +12,7 @@
 
 
 module.exports = {
-	getInfo: function(params) {
+	getCostInfo: function(params) {
 
 	var settings = {
 	  origin: params.origin,
@@ -47,6 +47,6 @@ module.exports = {
 },
 
 	account: function() {
-		return 'pro' // setting akun anda disini	
+		return 'starter' // setting akun anda disini	
 	}
 }
