@@ -47,8 +47,12 @@ module.exports = {
 	path: function() {
 		if(accountType == 'pro') {
 			return 'api/'
-		} else {
-			return ''
+		} 
+		if(accountType == 'starter') {
+			return 'starter/'
+		}
+		if(accountType == 'basic') {
+			return 'basic/'
 		}
 	},
 
