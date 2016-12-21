@@ -6,7 +6,8 @@ module.exports = {
 
 	getProvince: function(provinceId) {
 		return new Promise((resolve, rej) => {
-			unirest.get('http://pro.rajaongkir.com/api/province?id=' + provinceId)
+			unirest.get('http://'+setting.account()+'.rajaongkir.com/'+ 
+			setting.path() +'province?id=' + provinceId)
 			.headers(setting.getKey())
 			.end(function (response) {
 				var body = response.body
@@ -17,7 +18,8 @@ module.exports = {
 
 	getCities: function(provinceId) {
 		return new Promise((resolve, rej) => {
-			unirest.get('http://'+setting.account()+'.rajaongkir.com/api/city?province=' + provinceId)
+			unirest.get('http://'+setting.account()+'.rajaongkir.com/'+ 
+			setting.path() +'city?province=' + provinceId)
 			.headers(setting.getKey())
 			.end(function (response) {
 				var body = response.body
@@ -28,7 +30,8 @@ module.exports = {
 
 	getSubdistricts: function(cityId) {
 			return new Promise((resolve, rej) => {
-			unirest.get('http://'+setting.account()+'.rajaongkir.com/api/subdistrict?city'+ cityId)
+			unirest.get('http://'+setting.account()+'.rajaongkir.com/'+ 
+			setting.path() +'subdistrict?city='+ cityId)
 			.headers(setting.getKey())
 			.end(function (response) {
 				var body = response.body
@@ -40,7 +43,8 @@ module.exports = {
 
 	getRestUrl: function(params) {
 		return new Promise((resolve, rej) => {
-			unirest.get('http://'+setting.account()+'.rajaongkir.com/api/'+setting.getPath(params))
+			unirest.get('http://'+setting.account()+'.rajaongkir.com/'+ 
+			setting.path() +setting.getPath(params))
 			.headers(setting.getKey())
 			.end(function (response) {
 				var body = response.body
@@ -54,6 +58,7 @@ module.exports = {
 	*/
 	getCost : function(params) {
 		return new Promise((resolve, rej) => {
+			console.log('http://'+setting.account()+'.rajaongkir.com/api/cost')
 			unirest.post('http://'+setting.account()+'.rajaongkir.com/api/cost')
 			.headers(setting.getHeaders())
 			.send(setting.getCostInfo(params))

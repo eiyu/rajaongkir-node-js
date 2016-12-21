@@ -1,6 +1,6 @@
 var ongkir = require('./ongkir')
 
-var someProvince = ongkir.getProvince('12')
+var someProvince = ongkir.getProvince('11')
 
 // mendapatkan sebuah province berdasarkan id provinsi
 someProvince.then(function(data) {
@@ -9,23 +9,14 @@ someProvince.then(function(data) {
 
 // mendapatkan daftar kota di suatu provinsi berdasarkan id provinsi
 var someCities = ongkir.getCities('12')
-
 someCities.then(function(data) {
 	console.log(data)
 })
 
 // mendapatkan daftar kecamatan di suatu kota berdasarkan id kota
-var someSubdistricts = ongkir.getSubdistricts('12')
-
-someProvince.then(function(data) {
-	console.log(data)
-})
-
-
-// mendapatkan daftar kecamatan di suatu kota berdasarkan id kota
-var someSubdistricts = ongkir.getSubdistricts('12')
-someProvince.then(function(data) {
-	console.log(data)
+var someSubdistricts = ongkir.getSubdistricts('13')
+someSubdistricts.then(function(data) {
+	console.log("subdis",data)
 })
 
 /**
@@ -37,24 +28,24 @@ someProvince.then(function(data) {
 * 	mendapatkan daftar kecamatan pada suatu kota
 * @ /subdistrict/city/id
 */
-var somePath = ongkir.getRestUrl({param1:'city', param2:'province', param3:'12'})
+var somePath = ongkir.getRestUrl({param1:'city', param2:'province', param3:'14'})
 somePath.then(function(data) {
-	console.log(data)
+	console.log("rest",data)
 })
 
 
-//TARIF LOKAL
+// TARIF LOKAL
 // mendapatkan harga ongkos kirim
 var someCost = ongkir.getCost({origin:'1', destination:'2', weight: '1000'})
 someCost.then(function(data) {
-	console.log(data)
+	console.log("cost",data)
 })
 
 
 // CEK RESI
 var waybill = ongkir.getWaybill({waybill:'SOCAG00183235715', courier:'jne'})
 waybill.then(function(data) {
-	console.log(data)
+	console.log("waybill", data)
 })
 
 // // INTERNATIONAL DESTINATION 

@@ -10,23 +10,22 @@
  * @params.courier
  */
 
+var apiKey = 'api-key';
+var accountType = 'starter';
+var originType = 'city';
+var destinationType = 'city';
+var courier = 'jne:wahana:pos:jnt' 
 
 module.exports = {
 	getCostInfo: function(params) {
-
 	var settings = {
 	  origin: params.origin,
-	  // setting tipe asal pengiriman
-	  originType: 'city',
+	  originType: originType,
 	  destination: params.destination,
-	  // setting tipe tujuan 
-	  destinationType: 'city',
+	  destinationType: destinationType,
 	  weight: params.weight,
-	  // setting courier contoh : 'jne:wahana:pos:jnt'
-	  courier: 'jne:wahana:pos:jnt' 
+	  courier: courier
 	}
-
-
 	return settings
 },
 
@@ -35,18 +34,30 @@ module.exports = {
 },
 
 	getKey: function() {
-	//api key anda
-	return {"key": "api-key-anda"} // setting api key anda disini
+	return {"key": apiKey} 
 },
 
 	getHeaders: function() {
 	return {
-	    "key": "api-key-anda", // setting api key anda disini
+	    "key": apiKey, 
 	    "content-type": "application/x-www-form-urlencoded"
 	}
 },
 
+	path: function() {
+		if(accountType == 'pro') {
+			return 'api/'
+		} else {
+			return ''
+		}
+	},
+
 	account: function() {
-		return 'starter' // setting akun anda disini	
+		if(accountType == 'pro') {
+			return 'pro'
+		}
+		else {
+			return 'api'
+		}
 	}
 }
