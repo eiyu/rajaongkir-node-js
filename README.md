@@ -29,7 +29,7 @@ var app = express()
 	app.use('/', router)
 
 	router.get('/province/:id', function(req, res) {
-		var a = ongkir.getCity(param.id)
+		var a = ongkir.getProvince(param.id)
 		a.then(function(data) {
 			res.send(data['rajaongkir']['results'])
 			res.end()
@@ -54,4 +54,57 @@ var server = app.listen(8080, function() {
 	var port = server.address().port
 	console.log("server berjalan di http://localhost:8080")
 })
+```
+# Dokumentasi API
+Menggunakan promise<br/>
+semua parameter harus bertipe string!
+
+
+## Mengambil data semua provinsi
+
+parameter yg diperlukan: tidak ada
+```javascript
+var provinces = ongkir.getAllProvince()
+provinces.then(function(prov) {
+	console.log(prov)
+})
+```
+
+## Mengambil data sebuah provinsi
+
+parameter yg diperlukan: id provinsi
+```javascript
+var province = ongkir.getProvince(id)
+province.then(function(prov) {
+	console.log(prov)
+})
+```
+
+## Mengambil data semua kota pada sebuah provinsi
+parameter yg diperlukan : id provinsi
+```javascript
+var cities = ongkir.getCities(id)
+cities.then(function(city) {
+	console.log(city)
+})
+
+
+## Mengambil data semua kecamatan pada sebuah kota
+parameter yg diperlukan: id city
+```javascript
+var subdistricts = ongkir.getSubdistricts(id)
+subdistricts.then(function(subdistrict) {
+	console.log(subdistrict)
+})
+```
+
+## Mengambil data semua kecamatan pada sebuah kota dengan rest url
+parameter yg diperlukan: object {param1:'city', param2:'province', param3:'14'}
+
+```javascript
+var subdistricts = ongkir.getRestUrl(urlObj)
+cities.then(function(subdistrict) {
+	console.log(subdistrict)
+})
+
 ```

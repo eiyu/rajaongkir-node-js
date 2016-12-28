@@ -1,6 +1,6 @@
 {
   "name": "rajaongkir-node-js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "rest client for rajaongkir API",
   "main": "ongkir.js",
   "scripts": {
@@ -13,6 +13,7 @@
     "js"
   ],
   "author": "Yuliana",
+  "email": "ysiulil22@gmail.com",
   "license": "ISC",
   "dependencies": {
     "unirest": "^0.5.1"
