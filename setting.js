@@ -14,7 +14,7 @@ var apiKey = 'api-key';
 var accountType = 'starter';
 var originType = 'city';
 var destinationType = 'city';
-var courier = 'jne:wahana:pos:jnt' 
+var courier = 'jne' 
 
 module.exports = {
 	getCostInfo: function(params) {
