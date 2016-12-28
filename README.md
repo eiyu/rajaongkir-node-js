@@ -87,7 +87,7 @@ var cities = ongkir.getCities(id)
 cities.then(function(city) {
 	console.log(city)
 })
-
+```
 
 ## Mengambil data semua kecamatan pada sebuah kota
 parameter yg diperlukan: id city
@@ -99,12 +99,57 @@ subdistricts.then(function(subdistrict) {
 ```
 
 ## Mengambil data semua kecamatan pada sebuah kota dengan rest url
-parameter yg diperlukan: object {param1:'city', param2:'province', param3:'14'}
-
+parameter yg diperlukan: 
+```javascript
+urlObj: {
+		param1:'city', // tipe string 
+		param2:'province', // tipe string 
+		param3:'14' // tipe string id kota
+		}
+```
 ```javascript
 var subdistricts = ongkir.getRestUrl(urlObj)
 cities.then(function(subdistrict) {
 	console.log(subdistrict)
+})
+
+```
+
+
+## Mengambil data ongkos kirim
+kurir yg diinginkan dll bisa di setting seperti pada yang sudah dijelaskan di bagian penggunaan
+parameter yg diperlukan:
+```javascript
+dataObj: {
+		origin: '', // tipe string id kota atau kecamatan
+		destination: '', // tipe string id kota atau kecamatan
+		weight:'' // tipe string berat kiriman
+	    }
+```
+
+```javascript
+var costs = ongkir.getCost(dataObj)
+costs.then(function(cost) {
+	console.log(cost)
+})
+
+```
+
+
+## Mengambil data resi
+parameter yg diperlukan:
+kurir yg diinginkan dll bisa di setting seperti pada yang sudah dijelaskan di bagian penggunaan
+```javascript
+dataObj: {
+		waybill: '', // tipe string resi 
+		courier: '' // tipe string nama kurir
+	    }
+```
+
+```javascript
+var waybill = ongkir.getWaybill(dataObj)
+waybill.then(function(resi) {
+	console.log(resi)
 })
 
 ```
