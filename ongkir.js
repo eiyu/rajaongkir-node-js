@@ -4,6 +4,20 @@ var setting = require('./setting')
 
 module.exports = {
 
+	getAllProvince: function() {
+		return new Promise((resolve, rej) => {
+			console.log('http://'+setting.account()+'.rajaongkir.com/'+ 
+			setting.path() +'province?id=' + provinceId)
+			unirest.get('http://'+setting.account()+'.rajaongkir.com/'+ 
+			setting.path() +'province')
+			.headers(setting.getKey())
+			.end(function (response) {
+				var body = response.body
+				resolve(body)
+			});
+		})
+	},
+
 	getProvince: function(provinceId) {
 		return new Promise((resolve, rej) => {
 			console.log('http://'+setting.account()+'.rajaongkir.com/'+ 
