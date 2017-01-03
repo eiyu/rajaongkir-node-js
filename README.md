@@ -33,7 +33,10 @@ var app = express()
 		a.then(function(data) {
 			res.send(data['rajaongkir']['results'])
 			res.end()
-		})
+		}).catch(function(err) {
+			console.log(err)
+			// lakukan sesuatu dengan error
+			})
 
 	})
 
@@ -45,7 +48,10 @@ var app = express()
 			// console.log(val)
 			res.json(val)
 			res.end()
-		})
+		}).catch(function(err) {
+			console.log(err)
+			// lakukan sesuatu dengan error
+			})
 	})
 
 // node server
@@ -150,6 +156,33 @@ dataObj: {
 var waybill = ongkir.getWaybill(dataObj)
 waybill.then(function(resi) {
 	console.log(resi)
+})
+
+```
+
+
+## Mengambil data suatu negara
+parameter yg diperlukan: id Negara
+
+
+```javascript
+var country = ongkir.getCountry(id)
+country.then(function(country) {
+	console.log(country)
+})
+
+```
+
+
+
+## Mengambil data suatu negara
+parameter yg diperlukan: id Negara
+
+
+```javascript
+var country = ongkir.getCountry(id)
+country.then(function(country) {
+	console.log(country)
 })
 
 ```
