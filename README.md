@@ -1,4 +1,5 @@
 # rajaongkir-node-js
+[![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg)](https://github.com/eiyu/rajaongkir-node-js)
 
 Package ini menggunakan [unirest](https://github.com/Mashape/unirest-nodejs) dapat digunakan untuk membuat rest client pada web app anda dan sudah dicoba di framework [express](https://github.com/expressjs/express) dan berjalan dengan baik.
 
