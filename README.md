@@ -19,47 +19,61 @@ Menggunakan promise
 
 ```javascript
 //dependencies
-var express = require('express')
-var router = express.Router()
-var ongkir = require('rajaongkir-node-js')
-var bodyParser = require('body-parser')
-var urlencodedParser = bodyParser.urlencoded({extended: false})
-var request = ongkir('api-key-anda', 'tipe-akun', 'courier')
+const express = require('express')
+const router = express.Router()
+const rajaongkir = require('./p.js')
+const bodyParser = require('body-parser')
+const urlencodedParser = bodyParser.urlencoded({extended: false})
+const request = rajaongkir('f53bddaf2179c289732116094eb1b208', 'pro', 'jne:pos')
 
 //express
 var app = express()
 	app.use('/', router)
 
+	router.post('/api/:query',urlencodedParser, function(req, res) {
+	const {body, headers, path} = req
+		const cost = request.post(body, headers, path)
+		cost.catch(err => err).
+			then(cost => {
+				res.write(cost)
+				res.end()
+		})
+	})
+
+	router.post('/api/:path/:query',urlencodedParser, function(req, res) {
+		const {body, headers, path} = req
+		console.log('ac ', body, headers, path)
+		const waybill = request.post(body, headers, path)
+		waybill.catch(err => err).
+			then(waybill => {
+				res.write(waybill)
+				res.end()
+		})
+	})
+
 	router.get('/api/:query', function(req, res) {
 		const location = request.get(req.url)
-		location.then(loc => {
+		location.catch(err => console.log(err))
+			.then(loc => {
 				res.write(loc)
 				res.end()
 		})
 	})
 
-	router.get('/api/:locationType/:query', function(req, res) {
+	router.get('/api/:path/:query', function(req, res) {
 		const location = request.get(req.url)
-		location.then(loc => {
+		location.catch(err => console.log(err))
+			.then(loc => {
 				res.write(loc)
 				res.end()
-		})
-	})
-
-	router.post('/api/cost',urlencodedParser, function(req, res) {
-		const cost = request.post(req.body, req.headers)
-		cost.then(cost => {
-			res.write(cost)
-			res.end()
 		})
 	})
 
 // node server
 var server = app.listen(8080, function() {
-	var host = server.address().address
-	var port = server.address().port
 	console.log("server berjalan di http://localhost:8080")
 })
+
 ```
 # Dokumentasi API
 Setiap request me-return promise<br/>
