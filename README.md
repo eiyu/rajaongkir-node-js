@@ -18,53 +18,52 @@ Menggunakan promise
 //dependencies
 const express = require('express')
 const router = express.Router()
-const rajaongkir = require('./p.js')
+const rajaongkir = require('rajaongkir-node-js')
 const bodyParser = require('body-parser')
 const urlencodedParser = bodyParser.urlencoded({extended: false})
 const request = rajaongkir('api-key', 'starter', 'jne:pos')
 
 //express
 var app = express()
-	app.use('/', router)
+  app.use('/', router)
 
-	router.post('/api/:query',urlencodedParser, function(req, res) {
-	const {body, headers, path} = req
-		const cost = request.post(body, headers, path)
-		cost.catch(err => err).
-			then(cost => {
-				res.write(cost)
-				res.end()
-		})
-	})
+  router.post('/api/:query',urlencodedParser, function(req, res) {
+    const {body, headers, path} = req
+    const cost = request.post(body, headers, path)
+    cost.catch(err => err).
+      then(cost => {
+      res.write(cost)
+      res.end()
+    })
+  })
 
-	router.post('/api/:path/:query',urlencodedParser, function(req, res) {
-		const {body, headers, path} = req
-		console.log('ac ', body, headers, path)
-		const waybill = request.post(body, headers, path)
-		waybill.catch(err => err).
-			then(waybill => {
-				res.write(waybill)
-				res.end()
-		})
-	})
+  router.post('/api/:path/:query',urlencodedParser, function(req, res) {
+    const {body, headers, path} = req
+    const waybill = request.post(body, headers, path)
+    waybill.catch(err => err).
+      then(waybill => {
+        res.write(waybill)
+        res.end()
+    })
+  })
 
-	router.get('/api/:query', function(req, res) {
-		const location = request.get(req.url)
-		location.catch(err => console.log(err))
-			.then(loc => {
-				res.write(loc)
-				res.end()
-		})
-	})
+  router.get('/api/:query', function(req, res) {
+    const location = request.get(req.url)
+    location.catch(err => console.log(err))
+      .then(loc => {
+        res.write(loc)
+        res.end()
+    })
+  })
 
-	router.get('/api/:path/:query', function(req, res) {
-		const location = request.get(req.url)
-		location.catch(err => console.log(err))
-			.then(loc => {
-				res.write(loc)
-				res.end()
-		})
-	})
+  router.get('/api/:path/:query', function(req, res) {
+    const location = request.get(req.url)
+    location.catch(err => console.log(err))
+      .then(loc => {
+        res.write(loc)
+        res.end()
+    })
+  })
 
 // node server
 var server = app.listen(8080, function() {
