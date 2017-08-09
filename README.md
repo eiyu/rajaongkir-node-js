@@ -8,10 +8,7 @@ npm install rajaongkir-node-js
 
 # Penggunaan
 
-1. Setelah package ini terinstall masuk ke direktori /node_modules/rajaongkir-node-js.
-2. Buka setting.js dengan text editor anda.
-3. Ganti api key dan tipe akun anda.
-4. Jika anda menggunakan akun pro anda bisa mengubah settingan originType dan destinationType menjadi subdistrict. Info lebih lanjut bisa kunjungi [Rajaongkir](http://rajaongkir.com/dokumentasi/pro).
+Sedang ditulis
 
 # Contoh Penggunaan di express js
 
