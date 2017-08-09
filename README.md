@@ -1,10 +1,10 @@
 # rajaongkir-node-js
 [![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg)](https://github.com/eiyu/rajaongkir-node-js)
 
-Package ini menggunakan [unirest](https://github.com/Mashape/unirest-nodejs) dapat digunakan untuk membuat rest client pada web app anda dan sudah dicoba di framework [express](https://github.com/expressjs/express) dan berjalan dengan baik.
+Package ini dapat digunakan untuk membuat rest client pada web app anda dan sudah dicoba di framework [express](https://github.com/expressjs/express) dan berjalan dengan baik.
 
 # instalasi
-npm install rajaongkir-node-js 
+npm install rajaongkir-node-js
 
 # Penggunaan
 
@@ -24,35 +24,34 @@ var router = express.Router()
 var ongkir = require('rajaongkir-node-js')
 var bodyParser = require('body-parser')
 var urlencodedParser = bodyParser.urlencoded({extended: false})
+var request = ongkir('api-key-anda', 'tipe-akun', 'courier')
 
 //express
 var app = express()
 	app.use('/', router)
 
-	router.get('/province/:id', function(req, res) {
-		var a = ongkir.getProvince(param.id)
-		a.then(function(data) {
-			res.send(data['rajaongkir']['results'])
-			res.end()
-		}).catch(function(err) {
-			console.log(err)
-			// lakukan sesuatu dengan error
-			})
-
+	router.get('/api/:query', function(req, res) {
+		const location = request.get(req.url)
+		location.then(loc => {
+				res.write(loc)
+				res.end()
+		})
 	})
 
-	router.post('/form',urlencodedParser,function(req, res) {
-		console.log(req.body)
-		var params = req.body
-		var a = ongkir.getCost(params)
-		a.then(function(val) {
-			// console.log(val)
-			res.json(val)
+	router.get('/api/:locationType/:query', function(req, res) {
+		const location = request.get(req.url)
+		location.then(loc => {
+				res.write(loc)
+				res.end()
+		})
+	})
+
+	router.post('/api/cost',urlencodedParser, function(req, res) {
+		const cost = request.post(req.body, req.headers)
+		cost.then(cost => {
+			res.write(cost)
 			res.end()
-		}).catch(function(err) {
-			console.log(err)
-			// lakukan sesuatu dengan error
-			})
+		})
 	})
 
 // node server
@@ -63,127 +62,10 @@ var server = app.listen(8080, function() {
 })
 ```
 # Dokumentasi API
-Menggunakan promise<br/>
-semua parameter harus bertipe string!
+Setiap request me-return promise<br/>
 
+get method memerlukan parameter url
+request.get(url)
 
-## Mengambil data semua provinsi
-
-parameter yg diperlukan: tidak ada
-```javascript
-var provinces = ongkir.getAllProvince()
-provinces.then(function(prov) {
-	console.log(prov)
-})
-```
-
-## Mengambil data sebuah provinsi
-
-parameter yg diperlukan: id provinsi
-```javascript
-var province = ongkir.getProvince(id)
-province.then(function(prov) {
-	console.log(prov)
-})
-```
-
-## Mengambil data semua kota pada sebuah provinsi
-parameter yg diperlukan : id provinsi
-```javascript
-var cities = ongkir.getCities(id)
-cities.then(function(city) {
-	console.log(city)
-})
-```
-
-## Mengambil data semua kecamatan pada sebuah kota
-parameter yg diperlukan: id city
-```javascript
-var subdistricts = ongkir.getSubdistricts(id)
-subdistricts.then(function(subdistrict) {
-	console.log(subdistrict)
-})
-```
-
-## Mengambil data semua kecamatan pada sebuah kota dengan rest url
-parameter yg diperlukan: 
-```javascript
-urlObj: {
-		param1:'city', // tipe string 
-		param2:'province', // tipe string 
-		param3:'14' // tipe string id kota
-		}
-```
-```javascript
-var subdistricts = ongkir.getRestUrl(urlObj)
-cities.then(function(subdistrict) {
-	console.log(subdistrict)
-})
-
-```
-
-
-## Mengambil data ongkos kirim
-kurir yg diinginkan dll bisa di setting seperti pada yang sudah dijelaskan di bagian penggunaan
-parameter yg diperlukan:
-```javascript
-dataObj: {
-		origin: '', // tipe string id kota atau kecamatan
-		destination: '', // tipe string id kota atau kecamatan
-		weight:'' // tipe string berat kiriman
-	    }
-```
-
-```javascript
-var costs = ongkir.getCost(dataObj)
-costs.then(function(cost) {
-	console.log(cost)
-})
-
-```
-
-
-## Mengambil data resi
-parameter yg diperlukan:
-kurir yg diinginkan dll bisa di setting seperti pada yang sudah dijelaskan di bagian penggunaan
-```javascript
-dataObj: {
-		waybill: '', // tipe string resi 
-		courier: '' // tipe string nama kurir
-	    }
-```
-
-```javascript
-var waybill = ongkir.getWaybill(dataObj)
-waybill.then(function(resi) {
-	console.log(resi)
-})
-
-```
-
-
-## Mengambil data suatu negara
-parameter yg diperlukan: id Negara
-
-
-```javascript
-var country = ongkir.getCountry(id)
-country.then(function(country) {
-	console.log(country)
-})
-
-```
-
-
-
-## Mengambil data suatu negara
-parameter yg diperlukan: id Negara
-
-
-```javascript
-var country = ongkir.getCountry(id)
-country.then(function(country) {
-	console.log(country)
-})
-
-```
+post method memerlukan request body dan request headers
+request.post(body, headers)

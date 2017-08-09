@@ -15,7 +15,7 @@
   "author": "Yuliana",
   "email": "ysiulil22@gmail.com",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "unirest": "^0.5.1"
   }
 }
