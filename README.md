@@ -24,7 +24,7 @@ const router = express.Router()
 const rajaongkir = require('./p.js')
 const bodyParser = require('body-parser')
 const urlencodedParser = bodyParser.urlencoded({extended: false})
-const request = rajaongkir('f53bddaf2179c289732116094eb1b208', 'pro', 'jne:pos')
+const request = rajaongkir('api-key', 'starter', 'jne:pos')
 
 //express
 var app = express()
@@ -76,10 +76,5 @@ var server = app.listen(8080, function() {
 
 ```
 # Dokumentasi API
-Setiap request me-return promise<br/>
 
-get method memerlukan parameter url
-request.get(url)
-
-post method memerlukan request body dan request headers
-request.post(body, headers)
+Sedang ditulis
