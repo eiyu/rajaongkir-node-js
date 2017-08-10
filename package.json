@@ -2,7 +2,7 @@
   "name": "rajaongkir-node-js",
   "version": "1.0.3",
   "description": "rest client for rajaongkir API",
-  "main": "ongkir.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -8,13 +8,18 @@ npm install rajaongkir-node-js
 
 # Penggunaan
 
-Sedang ditulis
+```javascript
+const rajaongkir = require('rajaongkir-node-js')
+// masukan api-key tipe akun dan kurir
+const request = rajaongkir('api-key', 'starter', 'jne:pos')
+```
 
 # Contoh Penggunaan di express js
 
 Menggunakan promise
 
 ```javascript
+// server
 //dependencies
 const express = require('express')
 const router = express.Router()
@@ -71,6 +76,19 @@ var server = app.listen(8080, function() {
 })
 
 ```
-# Dokumentasi API
 
-Sedang ditulis
+# Contoh request.get
+
+```javascript
+var unirest = require('unirest')
+
+function call() {
+	unirest.post('http://localhost:8080/api/province')
+	.end(function (response) {
+	  console.log(response.body)
+	});
+}
+
+call()
+
+```
