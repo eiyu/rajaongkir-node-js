@@ -1,17 +1,17 @@
 
-var http = require("http");
-var qs = require('querystring');
+const http = require("http");
+const qs = require('querystring');
 
 const getRequest = function(options) {
   console.log(options)
   return new Promise((resolve, reject) => {
-    var req = http.request(options, function (res) {
-      var chunks = [];
+    const req = http.request(options, function (res) {
+      const chunks = [];
       res.on("data", function (chunk) {
         chunks.push(chunk);
       });
       res.on("end", function () {
-        var body = Buffer.concat(chunks);
+        const body = Buffer.concat(chunks);
           resolve(body.toString());
       });
     });
@@ -24,14 +24,13 @@ const getRequest = function(options) {
 
 const postRequest = (body, headers) => {
   return new Promise((resolve, reject) => {
-    var req = http.request(headers, function (res) {
-      var chunks = [];
-
+    const req = http.request(headers, function (res) {
+      const chunks = [];
       res.on("data", function (chunk) {
         chunks.push(chunk);
       });
       res.on("end", function () {
-        var body = Buffer.concat(chunks);
+        const body = Buffer.concat(chunks);
           resolve(body.toString())
       });
     });
