@@ -1,7 +1,7 @@
 const request = require('./request')
 const _with = require('./util')
-const init = (api, type='starter', courier='jne') => {
-  return (function(api, type, courier) {
+const init = (api, type='starter') => {
+  return (function(api, type) {
 
     const {getRequest, postRequest} = request
     const options = {
@@ -23,13 +23,15 @@ const init = (api, type='starter', courier='jne') => {
         const method = {"method": "POST"}
     		const path = url.split('/').reverse()
         const [a,b,...rest] = path
-        const opt = optionsWith(`/${b}/${a}`)(method)
+        const opt = path.length <= 3 ?
+          optionsWith(`/${a}`)(method):
+          optionsWith(`/${b}/${a}`)(method)
         console.log(opt)
         Object.assign(opt.headers, head)
         return postRequest(body, opt)
       }
     }
-  })(api, type,courier)
+  })(api, type)
 }
 
 const rajaongkir = init
