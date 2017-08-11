@@ -1,6 +1,6 @@
 {
   "name": "rajaongkir-node-js",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "rest client for rajaongkir API",
   "main": "index.js",
   "scripts": {
