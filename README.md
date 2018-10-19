@@ -18,7 +18,7 @@ request object memiliki dua method, get dan post
 ```javascript
 get(path)
 
-post(body[,headers[,path]])
+post(headers,[todo])
 ```
 
 Package ini mengikuti endpoint yang sama dengan dokumentasi di [rajaongkir](http://rajaongkir.com), akan tetapi path pertama bebas mengunakan nama apa saja.
@@ -33,85 +33,67 @@ Menggunakan promise
 //dependencies
 const express = require('express')
 const router = express.Router()
-const rajaongkir = require('rajaongkir-node-js')
+const {init} = require('rajaongkir-node-js')
 const bodyParser = require('body-parser')
 const urlencodedParser = bodyParser.urlencoded({extended: false})
-const request = rajaongkir('api-key', 'starter')
-
+const request = init('apiKey', 'starter')
 //express
 var app = express()
-  app.use('/', router)
+	app.use('/', router)
 
-  router.post('/bebas/:query',urlencodedParser, function(req, res) {
-    const {body, headers, path} = req
-    const cost = request.post(body, headers, path)
-    cost.catch(err => err).
-      then(cost => {
-      res.write(cost)
-      res.end()
-    })
-  })
+	router.post('/path/:cost',urlencodedParser, function(req, res) {
+	const {body, headers, path} = req
+		const cost = request.post(headers, body)
+		cost.then(x => {
+				res.write(x)
+				res.end()
+		}
+	)
+});
 
-  router.post('/bebas/:path/:query',urlencodedParser, function(req, res) {
-    const {body, headers, path} = req
-    const waybill = request.post(body, headers, path)
-    waybill.catch(err => err).
-      then(waybill => {
-        res.write(waybill)
-        res.end()
-    })
-  })
+	router.get('/path/:query', function(req, res) {
+		const{url} = req
+		const regionType = request.get(url)
+		regionType.then(x => {
+				res.write(x)
+				res.end()
+		}
+		)
+	})
 
-  router.get('/bebas/:query', function(req, res) {
-    const location = request.get(req.url)
-    location.catch(err => console.log(err))
-      .then(loc => {
-        res.write(loc)
-        res.end()
-    })
-  })
+		router.get('/form', function(req, res) {
+			res.send(`
+					<html>
+						<head>
+						<title> testing form </title>
 
-  router.get('/bebas/:path/:query', function(req, res) {
-    const location = request.get(req.url)
-    location.catch(err => console.log(err))
-      .then(loc => {
-        res.write(loc)
-        res.end()
-    })
-  })
+						<script>
+						const submit = () => {
+						document.getElementById('form').submit()
+						console.log('submit')
+						}
+
+						</script>
+						</head>
+						<body>
+							<form id="form" action="path/cost" method="post">
+								<input name="origin" type="number" placeholder="input id kota origin" /> <br/>
+								<input name="originType" type="text" placeholder="tipe kota origin" /> <br/>
+								<input name="destination" type="number" placeholder="input id kota tujuan" /> <br/>
+								<input name="destinationType" type="text" placeholder="tipe kota tujuan" /> <br/>
+								<input name="weight" type="integer" placeholder="masukan berat (gr)" /> <br/>
+								<input name="courier" type="text" placeholder="periksa ongkir" /> <br/>
+								<input type="submit" onclick="submit()"> Submit </input>
+							</form>
+						</body>
+					</html>
+				`)
+			res.end()
+		})
 
 // node server
 var server = app.listen(8080, function() {
 	console.log("server berjalan di http://localhost:8080")
 })
 
-```
-
-# Contoh request
-
-contoh dengan fetch API
-```javascript
-fetch('http://localhost:8080/bebas/cost', {method:'POST', body: "origin=123&destination=234&originType=subdistrict&destinationType=subdistrict&weight=1200&courier=pos", headers:{"content-type": "application/x-www-form-urlencoded"}}).then(x => x.json()).then(x => console.log(x))
-
-```
-
-menggunakan http library
-```javascript
-const unirest = require('unirest')
-unirest.post('http://localhost:8080/bebas/cost')
-.headers({
-  "content-type": "application/x-www-form-urlencoded"
-})
-.send({
-  origin: 12,
-  originType: 'subdistrict',
-  destination: 13,
-  destinationType: 'subdistrict',
-  weight: 1700,
-  courier: "jnt"
-})
-.end(function (response) {
-  console.log(response.body)
-});
-}
 ```

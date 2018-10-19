@@ -2,10 +2,9 @@
 const http = require("http");
 const qs = require('querystring');
 
-const getRequest = function(options) {
-  console.log(options)
+const _request = function(method, headers, forminput) {
   return new Promise((resolve, reject) => {
-    const req = http.request(options, function (res) {
+    const req = http.request(headers, function (res) {
       const chunks = [];
       res.on("data", function (chunk) {
         chunks.push(chunk);
@@ -15,32 +14,13 @@ const getRequest = function(options) {
           resolve(body.toString());
       });
     });
+    ((method) => {method === 'post' ? req.write(qs.stringify(forminput)) : void 0})(method)
     req.on("error", function(error) {
       resolve(error.message)
     })
     req.end();
   })
 }
-
-const postRequest = (body, headers) => {
-  return new Promise((resolve, reject) => {
-    const req = http.request(headers, function (res) {
-      const chunks = [];
-      res.on("data", function (chunk) {
-        chunks.push(chunk);
-      });
-      res.on("end", function () {
-        const body = Buffer.concat(chunks);
-          resolve(body.toString())
-      });
-    });
-    req.write(qs.stringify(body));
-    req.on("error", function(error) {
-      resolve(error.message)
-    })
-    req.end();
-  })
-}
-const requests = {getRequest,postRequest}
+const requests = {_request}
 
 module.exports = requests
