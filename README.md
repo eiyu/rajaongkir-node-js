@@ -9,9 +9,9 @@ npm install rajaongkir-node-js
 # Penggunaan
 Inisialisasi
 ```javascript
-const rajaongkir = require('rajaongkir-node-js')
+const {init} = require('rajaongkir-node-js')
 // masukan api-key tipe akun
-const request = rajaongkir('api-key', 'starter')
+const request = init('api-key', 'starter')
 ```
 
 request object memiliki dua method, get dan post
