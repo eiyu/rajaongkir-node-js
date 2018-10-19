@@ -1,39 +1,33 @@
-const request = require('./request')
-const _with = require('./util')
-const init = (api, type='starter') => {
-  return (function(api, type) {
-    const {getRequest, postRequest} = request
-    const headers = {
-      "port": null,
-      "hostname": type === 'pro' ? `pro.rajaongkir.com`: `api.rajaongkir.com`,
-    }
-    // add key value pairs to headers
-    const headersWith = _with(api)(type)(headers)
+const { map, Id, assignHostName, mapkey, assignPath, preparePath,i,assign } = require('./utils')
+const requests = require('./request')
+const GET = {"port" : null, "method":"GET"};
+const POST = {"port" : null, "method":"POST"};
+const got = require('got')
+const init = (apiKey, type='starter', req= requests) => {
+
+  const hostname = assignHostName(type)
+  const headers = mapkey(apiKey)
+  return(function(headers, hostname, type, req){
+    const content = headers
+    const {getRequest, postRequest, _request} = req
     return {
-      get: (url) => {
-        const method = {"method": "GET"}
-    		const path = url.split('/').reverse()
-        const [a,b,...rest] = path
-        const finalHeaders = path.length <= 3 ?
-          headersWith(`/${a}`)(method):
-          headersWith(`/${b}/${a}`)(method)
-        return getRequest(finalHeaders)
+      get: (url, contentType=content, request= _request) => {
+        const pathProperty = Id(url).map(preparePath(type)).map(assignPath)
+        const options = Id(GET).map(assign(hostname, pathProperty.join(i)))
+                        .map(assign(contentType(false)))
+        return request('get',options.join(i))
       },
-      post: (body, head, url) => {
-        const method = {"method": "POST"}
-    		const path = url.split('/').reverse()
-        const [a,b,...rest] = path
-        const finalHeaders = path.length <= 3 ?
-          headersWith(`/${a}`)(method):
-          headersWith(`/${b}/${a}`)(method)
-        console.log(options)
-        Object.assign(options.headers, head)
-        return postRequest(body, finalHeaders)
+      post: (headers, forminput, contentType=content, request= _request) => {
+        const cl = headers['content-length']
+        const pathProperty = Id('/cost').map(preparePath(type)).map(assignPath)
+        const hdrs = Id(POST).map(assign(hostname, pathProperty.join(i)))
+                        .map(assign(contentType(cl)))
+        return request('post',hdrs.join(i),forminput)
       }
     }
-  })(api, type)
+  })(headers, hostname, type, req)
 }
 
-const rajaongkir = init
-
-module.exports = rajaongkir
+module.exports = {
+  init
+}
