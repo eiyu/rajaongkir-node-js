@@ -1,5 +1,6 @@
 // utils
 // i got this curry code from Medium: functors and category composing software by Eric Elliott
+const querystring = require('querystring')
 const curry = (f, arr = []) => (...args) =>
 (a => a.length === f.length ?
   f(...a) :
@@ -15,9 +16,18 @@ const i = x => {
 const compose = (f1, f2) => x => f1(f2(x))
 const Id = val => ({
   map: fn => Id(fn(val)),
-  join: f => f(val)
+  join: f => f(val),
+  val: () => val
 });
+// new functions
+const exists = x => (x.val() !== undefined && x.val() !== null);
 
+const without = x => ({
+  map: fn => exists(x) ? x : x.map(fn)
+});
+const contentLength = (data) => ({
+  "content-length": Buffer.byteLength(querystring.stringify(data))
+})
 // dependencies functions
 const call = curry((fn, sep, str) => fn.call(str, sep))
 const reverse = arr => Array.prototype.reverse.call(arr)
@@ -94,5 +104,7 @@ module.exports = {
   curry,
   assignPath,
   preparePath,
-  assign
+  assign,
+  without,
+  contentLength
 }

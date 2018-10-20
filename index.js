@@ -1,28 +1,25 @@
-const { map, Id, assignHostName, mapkey, assignPath, preparePath,i,assign } = require('./utils')
-const requests = require('./request')
+const { map, Id, assignHostName, mapkey, assignPath, preparePath,assign,without,contentLength } = require('./utils')
+const {_request} = require('./request')
 const GET = {"port" : null, "method":"GET"};
 const POST = {"port" : null, "method":"POST"};
-const got = require('got')
-const init = (apiKey, type='starter', req= requests) => {
+const init = (apiKey, type='starter', req= _request) => {
 
   const hostname = assignHostName(type)
   const headers = mapkey(apiKey)
   return(function(headers, hostname, type, req){
-    const content = headers
-    const {getRequest, postRequest, _request} = req
     return {
-      get: (url, contentType=content, request= _request) => {
+      get: (url, contentType=headers, request= req) => {
         const pathProperty = Id(url).map(preparePath(type)).map(assignPath)
-        const options = Id(GET).map(assign(hostname, pathProperty.join(i)))
+        const options = Id(GET).map(assign(hostname, pathProperty.val()))
                         .map(assign(contentType(false)))
-        return request('get',options.join(i))
+        return request('get',options.val())
       },
-      post: (headers, forminput, contentType=content, request= _request) => {
-        const cl = headers['content-length']
+      post: (forminput, body=undefined, contentType=headers, request= _request) => {
+        const cl = without(Id(body)).map(assign(contentLength(forminput))) || Id(body['content-length'])
         const pathProperty = Id('/cost').map(preparePath(type)).map(assignPath)
-        const hdrs = Id(POST).map(assign(hostname, pathProperty.join(i)))
-                        .map(assign(contentType(cl)))
-        return request('post',hdrs.join(i),forminput)
+        const hdrs = Id(POST).map(assign(hostname, pathProperty.val()))
+                        .map(assign(contentType(cl.val()['content-length'])))
+        return request('post',hdrs.val(),forminput)
       }
     }
   })(headers, hostname, type, req)
