@@ -18,7 +18,7 @@ request object memiliki dua method, get dan post
 ```javascript
 get(path)
 
-post(headers,[todo])
+post(data)
 ```
 
 Package ini mengikuti endpoint yang sama dengan dokumentasi di [rajaongkir](http://rajaongkir.com), akan tetapi path pertama bebas mengunakan nama apa saja.
@@ -42,8 +42,8 @@ var app = express()
 	app.use('/', router)
 
 	router.post('/path/:cost',urlencodedParser, function(req, res) {
-	const {body, headers, path} = req
-		const cost = request.post(headers, body)
+	const {body} = req
+		const cost = request.post(body)
 		cost.then(x => {
 				res.write(x)
 				res.end()
@@ -52,6 +52,16 @@ var app = express()
 });
 
 	router.get('/path/:query', function(req, res) {
+		const{url} = req
+		const regionType = request.get(url)
+		regionType.then(x => {
+				res.write(x)
+				res.end()
+		}
+		)
+	})
+
+	router.get('/path/:region/:query', function(req, res) {
 		const{url} = req
 		const regionType = request.get(url)
 		regionType.then(x => {
