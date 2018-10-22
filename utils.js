@@ -91,6 +91,7 @@ module.exports = {
   Id: Id,
   compose,
   i,
+  exists,
   mapkey,
   assignHostName,
   createPath,

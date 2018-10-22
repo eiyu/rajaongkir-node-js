@@ -4,7 +4,7 @@
   "description": "rest client for rajaongkir API",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha utilities.test.js requests.test.js"
   },
   "keywords": [
     "rajaongkir",
@@ -16,7 +16,9 @@
   "email": "ysiulil22@gmail.com",
   "license": "ISC",
   "devDependencies": {
+    "chai": "^4.2.0",
     "eslint": "^5.7.0",
-    "mocha": "^5.2.0"
+    "mocha": "^5.2.0",
+    "sinon": "^7.0.0"
   }
 }

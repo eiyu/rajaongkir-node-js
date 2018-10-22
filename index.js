@@ -13,10 +13,18 @@ const init = (apiKey, accountType='starter', req= _request) => {
                         .map(assign(contentType(false)))
         return invokeRequest('get',options.val())
       },
-      post: (forminput, optionalHeaders=null, contentType=headers, invokeRequest= request) => {
+      post: (url,forminput, optionalHeaders=null, contentType=headers, invokeRequest= request) => {
         const cl = optionalHeaders ? Id(optionalHeaders) :
                           without(Id(optionalHeaders)).map(assign(contentLength(forminput)))
-        const pathProperty = Id('/cost').map(preparePath(type)).map(assignPath)
+        const pathProperty = Id(`/${url}`).map(preparePath(type)).map(assignPath)
+        const hdrs = Id(POST).map(assign(hostname, pathProperty.val()))
+                        .map(assign(contentType(cl.val()['content-length'])))
+        return invokeRequest('post',hdrs.val(),forminput)
+      },
+      postInternational: (forminput, optionalHeaders=null, contentType=headers, invokeRequest= request) => {
+        const cl = optionalHeaders ? Id(optionalHeaders) :
+                          without(Id(optionalHeaders)).map(assign(contentLength(forminput)))
+        const pathProperty = Id('/v2/internationalCost').map(preparePath(type)).map(assignPath)
         const hdrs = Id(POST).map(assign(hostname, pathProperty.val()))
                         .map(assign(contentType(cl.val()['content-length'])))
         return invokeRequest('post',hdrs.val(),forminput)

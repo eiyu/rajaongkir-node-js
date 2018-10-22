@@ -32,7 +32,8 @@ describe('Id Functor', function() {
 
 describe('exists', () => {
   it('a predicate function that will return false if suplied arguments are falsy', () => {
-    assert.equal(exists(Id(void 0)), true)
+    assert.equal(exists(Id(void 0)), false)
+    assert.equal(exists(Id('foo')), true)
   })
 })
 
