@@ -16,6 +16,7 @@
   "email": "ysiulil22@gmail.com",
   "license": "ISC",
   "devDependencies": {
+    "eslint": "^5.7.0",
     "mocha": "^5.2.0"
   }
 }

@@ -1,5 +1,3 @@
-// utils
-// i got this curry code from Medium: functors and category composing software by Eric Elliott
 const querystring = require('querystring')
 const curry = (f, arr = []) => (...args) =>
 (a => a.length === f.length ?
@@ -20,7 +18,7 @@ const Id = val => ({
   val: () => val
 });
 // new functions
-const exists = x => (x.val() !== undefined && x.val() !== null);
+const exists = x => (x.val() !== void 0 && x.val() !== null);
 
 const without = x => ({
   map: fn => exists(x) ? x : x.map(fn)
@@ -36,7 +34,7 @@ const splitBySlash = call(split, '/')
 const splitBySlashThenReverse = compose(reverse, splitBySlash)
 
 const createPath = curry((type, [query,...rest]) => {
-  if(query === undefined || rest === undefined) {
+  if(query === void 0 || rest === void 0) {
     return new Error(`you're not supplying a correct url path`)
   }
   if(typeof query !== 'string') {
@@ -44,16 +42,16 @@ const createPath = curry((type, [query,...rest]) => {
   }
   switch (type) {
     case 'pro':
-      return `/api/${(rest => rest.length > 2 ? `${rest[0]}/${query}` :`${query}`)(rest)}`
+      return `/api/${(restUrl => restUrl.length > 2 ? `${restUrl[0]}/${query}` :`${query}`)(rest)}`
       break;
     case 'starter':
-      return `/starter/${(rest => rest.length > 2 ? `${rest[0]}/${query}` :`${query}`)(rest)}`
+      return `/starter/${(restUrl => restUrl.length > 2 ? `${restUrl[0]}/${query}` :`${query}`)(rest)}`
       break;
     case 'basic':
-      return `/basic/${(rest => rest.length > 2 ? `${rest[0]}/${query}` :`${query}`)(rest)}`
+      return `/basic/${(restUrl => restUrl.length > 2 ? `${restUrl[0]}/${query}` :`${query}`)(rest)}`
       break;
     default:
-    return `/starter/${(rest => rest.length > 2 ? `${rest[0]}/${query}` :`${query}`)(rest)}`
+    return `/starter/${(restUrl => restUrl.length > 2 ? `${restUrl[0]}/${query}` :`${query}`)(rest)}`
   }
 })
 

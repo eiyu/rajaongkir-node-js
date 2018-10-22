@@ -1,4 +1,3 @@
-
 const http = require("http");
 const qs = require('querystring');
 
@@ -14,9 +13,10 @@ const _request = function(method, headers, forminput) {
           resolve(body.toString());
       });
     });
-    ((method) => {method === 'post' ? req.write(qs.stringify(forminput)) : void 0})(method)
+
+    ((requestedMethod) => {requestedMethod === 'post' ? req.write(qs.stringify(forminput)) : void 0 })(method)
     req.on("error", function(error) {
-      resolve(error.message)
+      reject(error.message)
     })
     req.end();
   })

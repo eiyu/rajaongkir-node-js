@@ -1,6 +1,7 @@
 const assert = require('assert');
-const { map, curry, compose, Id,
-        ifExist,i, assignHostName, mapkey,
+/* global it, describe */
+const { map, compose, Id, exists,
+        without,i, assignHostName, mapkey,
         splitBySlashThenReverse, createPath, splitBySlash,
         split,reverse, call, assign,
 } = require('./utils')
@@ -26,6 +27,25 @@ describe('Id Functor', function() {
           Id('some/url').map(splitBySlashThenReverse).toString()
         )
     assert.equal()
+  })
+})
+
+describe('exists', () => {
+  it('a predicate function that will return false if suplied arguments are falsy', () => {
+    assert.equal(exists(Id(void 0)), true)
+  })
+})
+
+describe('without', () => {
+  it('will kick off chain function only when IdFuntor context is undefined or null', () => {
+    const undeff = Id(void 0)
+    const context1 = Id('foo')
+    const context2 = Id('foobar')
+    const toBeKickOff = (cont) => cont.map(x => x+'bar')
+    assert.equal(without(undeff).map(assign(toBeKickOff(context1))).join(i).val(), 'foobar' )
+
+    // will not kick off chain function because context2 defined
+    assert.equal(without(context2).map(x => x+x+x).map(assign(toBeKickOff(context1))).join(i).val(), 'foobar' )
   })
 })
 

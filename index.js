@@ -1,28 +1,28 @@
-const { map, Id, assignHostName, mapkey, assignPath, preparePath,assign,without,contentLength } = require('./utils')
+const {Id, assignHostName, mapkey, assignPath, preparePath,assign,without,contentLength } = require('./utils')
 const {_request} = require('./request')
 const GET = {"port" : null, "method":"GET"};
 const POST = {"port" : null, "method":"POST"};
-const init = (apiKey, type='starter', req= _request) => {
-
-  const hostname = assignHostName(type)
-  const headers = mapkey(apiKey)
-  return(function(headers, hostname, type, req){
+const init = (apiKey, accountType='starter', req= _request) => {
+  const hostnameWithType = assignHostName(accountType)
+  const headersWithApiKey = mapkey(apiKey)
+  return(function(headers, hostname, type, request){
     return {
-      get: (url, contentType=headers, request= req) => {
+      get: (url, contentType=headers, invokeRequest= request) => {
         const pathProperty = Id(url).map(preparePath(type)).map(assignPath)
         const options = Id(GET).map(assign(hostname, pathProperty.val()))
                         .map(assign(contentType(false)))
-        return request('get',options.val())
+        return invokeRequest('get',options.val())
       },
-      post: (forminput, body=undefined, contentType=headers, request= _request) => {
-        const cl = without(Id(body)).map(assign(contentLength(forminput))) || Id(body['content-length'])
+      post: (forminput, body=null, contentType=headers, invokeRequest= request) => {
+        const cl = body ? Id(body) :
+                          without(Id(body)).map(assign(contentLength(forminput)))
         const pathProperty = Id('/cost').map(preparePath(type)).map(assignPath)
         const hdrs = Id(POST).map(assign(hostname, pathProperty.val()))
                         .map(assign(contentType(cl.val()['content-length'])))
-        return request('post',hdrs.val(),forminput)
+        return invokeRequest('post',hdrs.val(),forminput)
       }
     }
-  })(headers, hostname, type, req)
+  }(headersWithApiKey, hostnameWithType, accountType, req))
 }
 
 module.exports = {
