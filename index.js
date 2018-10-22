@@ -13,9 +13,9 @@ const init = (apiKey, accountType='starter', req= _request) => {
                         .map(assign(contentType(false)))
         return invokeRequest('get',options.val())
       },
-      post: (forminput, body=null, contentType=headers, invokeRequest= request) => {
-        const cl = body ? Id(body) :
-                          without(Id(body)).map(assign(contentLength(forminput)))
+      post: (forminput, optionalHeaders=null, contentType=headers, invokeRequest= request) => {
+        const cl = optionalHeaders ? Id(optionalHeaders) :
+                          without(Id(optionalHeaders)).map(assign(contentLength(forminput)))
         const pathProperty = Id('/cost').map(preparePath(type)).map(assignPath)
         const hdrs = Id(POST).map(assign(hostname, pathProperty.val()))
                         .map(assign(contentType(cl.val()['content-length'])))
