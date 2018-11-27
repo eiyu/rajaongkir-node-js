@@ -1,38 +1,33 @@
-const {Id, assignHostName, mapkey, assignPath, preparePath,assign,without,contentLength } = require('./utils')
-const {_request} = require('./request')
-const GET = {"port" : null, "method":"GET"};
-const POST = {"port" : null, "method":"POST"};
-const init = (apiKey, accountType='starter', req= _request) => {
-  const hostnameWithType = assignHostName(accountType)
-  const headersWithApiKey = mapkey(apiKey)
-  return(function(headers, hostname, type, request){
-    return {
-      get: (url, contentType=headers, invokeRequest= request) => {
-        const pathProperty = Id(url).map(preparePath(type)).map(assignPath)
-        const options = Id(GET).map(assign(hostname, pathProperty.val()))
-                        .map(assign(contentType(false)))
-        return invokeRequest('get',options.val())
-      },
-      post: (url,forminput, optionalHeaders=null, contentType=headers, invokeRequest= request) => {
-        const cl = optionalHeaders ? Id(optionalHeaders) :
-                          without(Id(optionalHeaders)).map(assign(contentLength(forminput)))
-        const pathProperty = Id(`/${url}`).map(preparePath(type)).map(assignPath)
-        const hdrs = Id(POST).map(assign(hostname, pathProperty.val()))
-                        .map(assign(contentType(cl.val()['content-length'])))
-        return invokeRequest('post',hdrs.val(),forminput)
-      },
-      postInternational: (forminput, optionalHeaders=null, contentType=headers, invokeRequest= request) => {
-        const cl = optionalHeaders ? Id(optionalHeaders) :
-                          without(Id(optionalHeaders)).map(assign(contentLength(forminput)))
-        const pathProperty = Id('/v2/internationalCost').map(preparePath(type)).map(assignPath)
-        const hdrs = Id(POST).map(assign(hostname, pathProperty.val()))
-                        .map(assign(contentType(cl.val()['content-length'])))
-        return invokeRequest('post',hdrs.val(),forminput)
-      }
-    }
-  }(headersWithApiKey, hostnameWithType, accountType, req))
-}
+const compose = require('ramda/src/compose')
+const pipeK = require('ramda/src/pipeK')
+const map = require('ramda/src/map')
+const has = require('ramda/src/has')
+const curry = require('ramda/src/curry')
+const prop = require('ramda/src/prop')
+const makeOpt = require('./lib/makeOpt')
+const logIfError = require('./lib/logError')
+const request = require('./request')
+const argsErr = require('./lib/argsErr')
 
-module.exports = {
-  init
-}
+const init = (account, apiKey, cb=request, opt=makeOpt) => {
+  return {
+    get: function(url, type=account, key=apiKey, call=cb, options=opt) {
+          return arguments.length !== 1 ?
+            argsErr:
+            pipeK(
+              logIfError,
+              call('get',null)
+            )(options('get',{type,key,url}))
+          },
+    post: function(url ,body, type=account, key=apiKey, call=cb, options=opt) {
+            return arguments.length !== 2 ?
+              argsErr:
+              pipeK(
+                logIfError,
+                call('post',body)
+              )(options('post',{body,type,key,url}))
+            },
+          }
+        }
+
+module.exports = init

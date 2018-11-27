@@ -1,26 +1,31 @@
 const http = require("http");
 const qs = require('querystring');
+const {Future} = require('fluture')
+const curry = require('ramda/src/curry')
 
-const _request = function(method, headers, forminput) {
-  return new Promise((resolve, reject) => {
-    const req = http.request(headers, function (res) {
-      const chunks = [];
-      res.on("data", function (chunk) {
-        chunks.push(chunk);
+const request = curry(function(method, forminput, headers) {
+  return Future( function computation(reject, resolve) {
+      const req = http.request(headers, function (res) {
+        let chunks = [];
+        res.on("data", function (chunk) {
+          chunks.push(chunk);
+        });
+        res.on("end", function () {
+          const body = Buffer.concat(chunks);
+          const result = JSON.parse(body)
+          if(result.rajaongkir.status.code === 400) {
+            resolve(result)
+          }
+          resolve(result)
+        });
       });
-      res.on("end", function () {
-        const body = Buffer.concat(chunks);
-          resolve(body.toString());
-      });
-    });
-
-    ((requestedMethod) => {requestedMethod === 'post' ? req.write(qs.stringify(forminput)) : void 0 })(method)
-    req.on("error", function(error) {
-      reject(error.message)
-    })
-    req.end();
+      ((requestedMethod) => {requestedMethod === 'post' ? req.write(qs.stringify(forminput)) : void 0 })(method)
+      req.on("error", function(error) {
+        resolve(error)
+      })
+      req.end();
   })
-}
-const requests = {_request}
+})
 
-module.exports = requests
+
+module.exports = request
